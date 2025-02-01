@@ -1,0 +1,11 @@
+{
+  "name": "your-package",
+    "version": "1.0.0",
+    "type": "module",
+    
+     "dependencies": {
+    "@gltf-transform/core": "^4.1.1",
+    "@gltf-transform/functions": "^4.1.1",
+    "gltf-pipeline": "^4.1.0"
+  }
+}
