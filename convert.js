@@ -5,6 +5,17 @@ import { join } from 'path';
 const inputDirectory = './models';        // Directory containing the FBX files
 const outputDirectory = './models/glb';   // Output directory for the GLB files
 
+
+
+/*
+
+Converts all FBX in  /models   to glb 
+
+
+*/
+
+
+
 // Ensure output directory exists
 if (!existsSync(outputDirectory)) {
     mkdirSync(outputDirectory, { recursive: true });

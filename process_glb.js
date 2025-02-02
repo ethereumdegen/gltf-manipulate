@@ -6,6 +6,18 @@ import path from 'path';
 
 const directoryPath = './models'; // Adjust as necessary
 
+
+
+/*
+
+Loop through every GLTF in /models, removes materials and textures, and re-saves
+ 
+
+
+*/
+
+
+
 // Custom transform: enable/disable backface culling.
 function backfaceCulling(options) {
     return (document) => {

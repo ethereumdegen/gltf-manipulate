@@ -5,6 +5,17 @@ import path from 'path';
 
 const directoryPath = './models'; // Adjust as necessary
 
+
+/*
+
+Loop through every GLTF in /models, exports a new GLB for each node 
+ 
+
+
+*/
+
+
+
 async function optimizeAndExportMeshes() {
     const io = new NodeIO();
     
