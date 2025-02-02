@@ -17,11 +17,16 @@ async function optimizeAndExportMeshes() {
 
             const document = await io.read(filePath);
             const root = document.getRoot();
-            const meshes = root.listMeshes();
+
+            const nodes = root.listNodes();
+
+        //    const meshes = root.listMeshes();
 
             // Process each mesh separately
-            for (let i = 0; i < meshes.length; i++) {
-                const mesh = meshes[i];
+            for (let i = 0; i < nodes.length; i++) {
+                const node = nodes[i];
+
+                let mesh = node.getMesh();
 
                 // Create a new document for each mesh
                 const newDocument = new Document();
@@ -69,7 +74,7 @@ async function optimizeAndExportMeshes() {
                 // Apply pruning to remove unnecessary data
                // await newDocument.transform(prune());
 
-                let output_name = mesh.getName() || `Mesh_${i}`;
+                let output_name = node.getName() || `Mesh_${i}`;
 
                 // Save as a single binary GLB file
                 const outputFilePath = path.join(directoryPath, `${file.replace('.glb', '')}_${output_name}.glb`);
