@@ -44,7 +44,7 @@ async function optimizeGLBFiles() {
 
         // Remove all materials
         root.listMaterials().forEach(material => {
-          material.dispose();
+          //material.dispose();
         });
 
         // Remove all textures
