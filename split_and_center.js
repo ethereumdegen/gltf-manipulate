@@ -137,9 +137,17 @@ function clonePrimitive(newDocument, primitive, buffer) {
     }
 
     // ✅ Copy material reference (if any)
-   // if (primitive.getMaterial()) {
-  //      newPrimitive.setMaterial(primitive.getMaterial());
-  //  }
+    if (primitive.getMaterial()) {
+        let old_mat_name = primitive.getMaterial().getName();
+
+
+         const flatWhiteMaterial = newDocument.createMaterial( old_mat_name )
+                .setBaseColorFactor( primitive.getMaterial().getBaseColorFactor() ) // RGBA: White
+                .setMetallicFactor(0) // Non-metallic
+                .setRoughnessFactor(1); // Fully rough (matte)
+
+        newPrimitive.setMaterial( flatWhiteMaterial );
+    }
 
     // ✅ Copy mode (Triangles, Points, Lines, etc.)
     newPrimitive.setMode(primitive.getMode());
