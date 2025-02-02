@@ -144,7 +144,9 @@ function clonePrimitive(newDocument, primitive, buffer) {
          const flatWhiteMaterial = newDocument.createMaterial( old_mat_name )
                 .setBaseColorFactor( primitive.getMaterial().getBaseColorFactor() ) // RGBA: White
                 .setMetallicFactor(0) // Non-metallic
-                .setRoughnessFactor(1); // Fully rough (matte)
+                .setRoughnessFactor(1)
+                 .setDoubleSided(true);
+                 ; // Fully rough (matte)
 
         newPrimitive.setMaterial( flatWhiteMaterial );
     }
