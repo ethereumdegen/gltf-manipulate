@@ -137,9 +137,9 @@ function clonePrimitive(newDocument, primitive, buffer) {
     }
 
     // ✅ Copy material reference (if any)
-    if (primitive.getMaterial()) {
-        newPrimitive.setMaterial(primitive.getMaterial());
-    }
+   // if (primitive.getMaterial()) {
+  //      newPrimitive.setMaterial(primitive.getMaterial());
+  //  }
 
     // ✅ Copy mode (Triangles, Points, Lines, etc.)
     newPrimitive.setMode(primitive.getMode());
