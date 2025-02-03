@@ -33,7 +33,14 @@ async function combineGLBFiles() {
 
                 // Create a new combined document
                 const combinedDocument = new Document();
-                const combinedRoot = combinedDocument.getRoot();
+
+
+
+                 const newScene = combinedDocument.createScene();
+                
+
+
+               // const combinedRoot = combinedDocument.getRoot();
 
                  const newIo = new NodeIO(); // New IO instance for writing
 
@@ -41,8 +48,8 @@ async function combineGLBFiles() {
 
                       // ✅ Create an empty node for collision volumes
                 const collisionParentNode = combinedDocument.createNode("collision_volumes");
-                combinedRoot.listNodes().push(collisionParentNode);
-
+                
+                newScene.addChild(collisionParentNode); 
 
 
                 // ✅ Utility function to correctly transfer meshes and their buffers
@@ -60,7 +67,10 @@ async function combineGLBFiles() {
                             }
 
                             // ✅ Add new mesh to the combined document
-                            combinedRoot.listMeshes().push(newMesh);
+                            //combinedRoot.listMeshes().push(newMesh);
+
+                            // newScene.addChild(collisionParentNode); 
+
 
                             // ✅ Create a new node for the mesh
                             const newNode = combinedDocument.createNode(`${prefix}_${srcNode.getName()}`).setMesh(newMesh);
@@ -69,7 +79,9 @@ async function combineGLBFiles() {
                             if (parentNode) {
                                 parentNode.addChild(newNode);
                             } else {
-                                combinedRoot.listNodes().push(newNode);
+                               // combinedRoot.listNodes().push(newNode);
+
+                                newScene.addChild(newNode); 
                             }
                         }
                     }

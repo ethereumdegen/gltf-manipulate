@@ -31,7 +31,7 @@ def create_empty_like_node(scene, node_name, parent_name=None, transform=None):
 
 def process_and_export_convex_hulls(input_file, output_file ):
     
-     print(f"-- Begin --  {input_file}   ")
+    print(f"-- Begin --  {input_file}   ")
    
 
         # Load the GLB file
@@ -98,10 +98,16 @@ def process_and_export_convex_hulls(input_file, output_file ):
 # Directory containing the GLB files
 directory_path = "models"
 
-# Loop through all files in the specified directory
+ 
+
 for filename in os.listdir(directory_path):
-     if filename.endswith(".glb") and not filename.startswith("collision_") and not filename.startswith("combined_"):
+    if filename.endswith(".glb") and not filename.startswith("collision_") and not filename.startswith("combined_"):
         input_path = os.path.join(directory_path, filename)
         output_path = os.path.join(directory_path, f"collision_{filename}")
-        process_and_export_convex_hulls(input_path, output_path)
+        
+        # Check if the output file already exists
+        if os.path.exists(output_path):
+            print(f"Skipping {filename}, collision file already exists.")
+            continue  # Skip processing
 
+        process_and_export_convex_hulls(input_path, output_path)
