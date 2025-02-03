@@ -54,7 +54,7 @@ def process_and_export_convex_hulls(input_file, output_file ):
      
 
     # Create a parent node for collision volumes
-    collision_node = scene.add_node(name="collision_volumes")
+    #collision_node = scene.add_node(name="collision_volumes")
 
     # Add each convex hull as a child node under the 'collision_volumes' node
     for i, hull in enumerate(hull_meshes):
