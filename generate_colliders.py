@@ -3,6 +3,10 @@ import trimesh
 import numpy as np
 import os
 import copy
+ 
+# Loop through every  .glb in models and generate a collision glb 
+
+
 
 def create_empty_like_node(scene, node_name, parent_name=None, transform=None):
     """
@@ -87,14 +91,13 @@ def process_and_export_convex_hulls(input_file, output_file ):
     
     
     
-#process_and_export_convex_hulls("model.glb",  "combined_convex_hulls.glb")  
 
 # Directory containing the GLB files
 directory_path = "models"
 
 # Loop through all files in the specified directory
 for filename in os.listdir(directory_path):
-     if filename.endswith(".glb") and not filename.startswith("collision_"):
+     if filename.endswith(".glb") and not filename.startswith("collision_") and not filename.startswith("combined_"):
         input_path = os.path.join(directory_path, filename)
         output_path = os.path.join(directory_path, f"collision_{filename}")
         process_and_export_convex_hulls(input_path, output_path)

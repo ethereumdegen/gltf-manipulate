@@ -2,7 +2,14 @@ import { NodeIO, Document, Node, Mesh, Material, BufferUtils } from '@gltf-trans
 import fs from 'fs';
 import path from 'path';
 
-const directoryPath = './models'; // Adjust as necessary
+const directoryPath = './models';  
+
+/*
+
+
+Loop through every  .glb in models and combine it with its generated collision glb 
+
+*/
 
 async function combineGLBFiles() {
     const io = new NodeIO();
@@ -35,7 +42,7 @@ async function combineGLBFiles() {
                       // ✅ Create an empty node for collision volumes
                 const collisionParentNode = combinedDocument.createNode("collision_volumes");
                 combinedRoot.listNodes().push(collisionParentNode);
-                
+
 
 
                 // ✅ Utility function to correctly transfer meshes and their buffers
