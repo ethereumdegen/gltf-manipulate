@@ -2,7 +2,7 @@ import coacd
 import trimesh
 import numpy as np
 import os
-
+import copy
 
 def create_empty_like_node(scene, node_name, parent_name=None, transform=None):
     """
@@ -22,22 +22,21 @@ def create_empty_like_node(scene, node_name, parent_name=None, transform=None):
         scene.graph.update(frame_to=node_name, frame_from='world', matrix=transform)
 
 
-
+ 
 
 
 def process_and_export_convex_hulls(input_file, output_file ):
-    # Load the GLB file
+   
+        # Load the GLB file
     # input_file = "model.glb"
     mesh = trimesh.load(input_file, force="mesh")
-    
-   # original_node_name = mesh.metadata.get('name')
-    
-    
+       
     
     # Original mesh with metadata
     original_mesh = coacd.Mesh(mesh.vertices, mesh.faces)   # this step may destroy metadata 
    
 
+     
     # Set CoACD parameters directly in function call
     convex_parts = coacd.run_coacd(
         original_mesh,
@@ -62,30 +61,22 @@ def process_and_export_convex_hulls(input_file, output_file ):
     # Convert each convex part to a Trimesh object
     hull_meshes = [trimesh.Trimesh(vertices=part[0], faces=part[1]) for part in convex_parts]
 
-     # Convert original_mesh back to a Trimesh object for compatibility
-    original_trimesh = trimesh.Trimesh(vertices=mesh.vertices, faces=mesh.faces)
 
+
+ 
 
     # Create a new Scene
     scene = trimesh.Scene()
-
-    # Add the original mesh to the scene with its original node name
-    scene.add_geometry(original_trimesh, node_name="root")
+   
  
     create_empty_like_node(scene, node_name='collision_volumes')
 
-
-    # Create a parent node for collision volumes
-    #collision_node = scene.add_node(name="collision_volumes")
-
-    # Add each convex hull as a child node under the 'collision_volumes' node
-    for i, hull in enumerate(hull_meshes):
-        scene.add_geometry(hull, node_name=f"convex_hull_{i}", parent_node_name="collision_volumes")
+ 
 
     # Export the scene as a GLB file
     scene.export( output_file)
 
-    print(f"Successfully saved GLB with original mesh and {len(hull_meshes)} collision volumes as 'combined_convex_hulls.glb'")
+    print(f"Successfully saved   {len(hull_meshes)} collision volumes ")
     
     
     
@@ -96,8 +87,8 @@ directory_path = "models"
 
 # Loop through all files in the specified directory
 for filename in os.listdir(directory_path):
-    if filename.endswith(".glb"):
+     if filename.endswith(".glb") and not filename.startswith("collision_"):
         input_path = os.path.join(directory_path, filename)
-        output_path = os.path.join(directory_path, f"convex_{filename}")
+        output_path = os.path.join(directory_path, f"collision_{filename}")
         process_and_export_convex_hulls(input_path, output_path)
 
