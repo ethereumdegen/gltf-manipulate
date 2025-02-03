@@ -30,7 +30,10 @@ def create_empty_like_node(scene, node_name, parent_name=None, transform=None):
 
 
 def process_and_export_convex_hulls(input_file, output_file ):
+    
+     print(f"-- Begin --  {input_file}   ")
    
+
         # Load the GLB file
     # input_file = "model.glb"
     mesh = trimesh.load(input_file, force="mesh")
@@ -87,7 +90,7 @@ def process_and_export_convex_hulls(input_file, output_file ):
     # Export the scene as a GLB file
     scene.export( output_file)
 
-    print(f"Successfully saved   {len(hull_meshes)} collision volumes ")
+    print(f"Successfully saved   {len(hull_meshes)} collision volumes for { output_file } ")
     
     
     

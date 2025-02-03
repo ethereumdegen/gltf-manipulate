@@ -11,6 +11,7 @@ const directoryPath = './models'; // Adjust as necessary
 Loop through every GLTF in /models, exports a new GLB for each node 
  
 
+Be careful - you might only want to 'apply' scale and rotation before running this. If you apply translation it may not work right
 
 */
 
