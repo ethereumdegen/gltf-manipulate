@@ -1,6 +1,7 @@
 import coacd
 import trimesh
 import numpy as np
+import os
 
 
 def process_and_export_convex_hulls(input_file, output_file ):
@@ -40,13 +41,15 @@ def process_and_export_convex_hulls(input_file, output_file ):
     # Convert each convex part to a Trimesh object
     hull_meshes = [trimesh.Trimesh(vertices=part[0], faces=part[1]) for part in convex_parts]
 
+     # Convert original_mesh back to a Trimesh object for compatibility
+    original_trimesh = trimesh.Trimesh(vertices=mesh.vertices, faces=mesh.faces)
 
 
     # Create a new Scene
     scene = trimesh.Scene()
 
     # Add the original mesh to the scene with its original node name
-    scene.add_geometry(original_mesh, node_name="root")
+    scene.add_geometry(original_trimesh, node_name="root")
  
      
 
@@ -64,6 +67,15 @@ def process_and_export_convex_hulls(input_file, output_file ):
     
     
     
-process_and_export_convex_hulls("model.glb",  "combined_convex_hulls.glb")  
-    
+#process_and_export_convex_hulls("model.glb",  "combined_convex_hulls.glb")  
+
+# Directory containing the GLB files
+directory_path = "models"
+
+# Loop through all files in the specified directory
+for filename in os.listdir(directory_path):
+    if filename.endswith(".glb"):
+        input_path = os.path.join(directory_path, filename)
+        output_path = os.path.join(directory_path, f"convex_{filename}")
+        process_and_export_convex_hulls(input_path, output_path)
 
