@@ -4,6 +4,27 @@ import numpy as np
 import os
 
 
+def create_empty_like_node(scene, node_name, parent_name=None, transform=None):
+    """
+    Create a conceptual 'empty' node in a trimesh scene by ensuring it's referenced
+    in the scene graph even without direct geometry.
+    """
+    if transform is None:
+        transform = np.eye(4)  # Default to identity matrix if no transform provided
+
+    # This line doesn't actually create a new node directly,
+    # but sets up the transform that will be used as a reference for actual geometry nodes.
+    if parent_name:
+        scene.graph.update(frame_to=node_name, frame_from=parent_name, matrix=transform)
+    else:
+        # If no parent is specified, attach directly to the root
+        # 'world' can be used as a generic root node name if needed
+        scene.graph.update(frame_to=node_name, frame_from='world', matrix=transform)
+
+
+
+
+
 def process_and_export_convex_hulls(input_file, output_file ):
     # Load the GLB file
     # input_file = "model.glb"
@@ -51,7 +72,8 @@ def process_and_export_convex_hulls(input_file, output_file ):
     # Add the original mesh to the scene with its original node name
     scene.add_geometry(original_trimesh, node_name="root")
  
-     
+    create_empty_like_node(scene, node_name='collision_volumes')
+
 
     # Create a parent node for collision volumes
     #collision_node = scene.add_node(name="collision_volumes")
