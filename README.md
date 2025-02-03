@@ -22,3 +22,28 @@ Uses COACD (req local install using pip) to generate colliders for each glb in /
 ### combine_colliders 
 
 Combines the original GLB with generated collliders. This is a separate script because pythons trimesh crate is insufficient 
+
+
+
+
+
+
+
+
+### How to run in python virtual env....
+
+```
+
+
+deactivate 
+
+python3 -m venv myenv
+
+source myenv/bin/activate  # Linux/macOS
+
+pip install coacd numpy trimesh
+
+
+
+
+```

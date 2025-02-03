@@ -3,6 +3,8 @@ import trimesh
 import numpy as np
 import os
 import copy
+
+import multiprocessing
  
 # Loop through every  .glb in models and generate a collision glb 
 
@@ -27,6 +29,14 @@ def create_empty_like_node(scene, node_name, parent_name=None, transform=None):
 
 
  
+# a safety wrapper so we dont totally give up even if the C++ process crashes internally 
+def safe_process_and_export_convex_hulls(input_file, output_file):
+    try:
+        process_and_export_convex_hulls(input_file, output_file)
+    except Exception as e:
+        logging.error(f"Skipping {input_file} due to crash: {e}")
+
+
 
 
 def process_and_export_convex_hulls(input_file, output_file ):
@@ -42,8 +52,10 @@ def process_and_export_convex_hulls(input_file, output_file ):
     # Original mesh with metadata
     original_mesh = coacd.Mesh(mesh.vertices, mesh.faces)   # this step may destroy metadata 
    
+ 
 
-     
+
+      # consider running as a subprocess incase it crashes at the C level !   
     # Set CoACD parameters directly in function call
     convex_parts = coacd.run_coacd(
         original_mesh,
@@ -93,7 +105,7 @@ def process_and_export_convex_hulls(input_file, output_file ):
     print(f"Successfully saved   {len(hull_meshes)} collision volumes for { output_file } ")
     
     
-    
+# ------------------------------------------------------------------------    
 
 # Directory containing the GLB files
 directory_path = "models"
@@ -110,4 +122,10 @@ for filename in os.listdir(directory_path):
             print(f"Skipping {filename}, collision file already exists.")
             continue  # Skip processing
 
-        process_and_export_convex_hulls(input_path, output_path)
+        #process_and_export_convex_hulls(input_path, output_path)
+
+
+        # Run in a separate process to avoid crashing the whole script
+        p = multiprocessing.Process(target=safe_process_and_export_convex_hulls, args=(input_path, output_path))
+        p.start()
+        p.join()  # Wait for the process to finish
