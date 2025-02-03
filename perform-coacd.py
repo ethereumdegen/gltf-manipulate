@@ -70,6 +70,13 @@ def process_and_export_convex_hulls(input_file, output_file ):
    
  
     create_empty_like_node(scene, node_name='collision_volumes')
+    
+     
+
+    # Add each convex hull as a child node under the 'collision_volumes' node
+    for i, hull in enumerate(hull_meshes):
+        scene.add_geometry(hull, node_name=f"convex_hull_{i}", parent_node_name="collision_volumes")
+
 
  
 
