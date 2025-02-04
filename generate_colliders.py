@@ -60,7 +60,7 @@ def process_and_export_convex_hulls(input_file, output_file ):
     convex_parts = coacd.run_coacd(
         original_mesh,
         threshold=0.1,              # Higher = fewer convex hulls (default: 0.05)
-        max_convex_hull=5,          # Reduce number of convex hulls (-1 means unlimited)
+        max_convex_hull=6,          # Reduce number of convex hulls (-1 means unlimited)
         preprocess_mode="auto",     # Keep automatic preprocessing
         preprocess_resolution=50,   # Lower preprocessing resolution
         resolution=50000,           # Lower = fewer hulls, but less accurate

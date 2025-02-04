@@ -33,9 +33,11 @@ async function optimizeGLBFiles() {
         
 
 
-        root.listNodes().forEach(node => {
+       /* root.listNodes().forEach(node => {
           node.setTranslation([0, 0, 0]);
-        });
+        });*/
+
+        await document.transform(center({pivot: 'below'}));
 
  
  
