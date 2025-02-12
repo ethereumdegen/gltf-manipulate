@@ -36,7 +36,7 @@ async function optimizeGLBFiles() {
         root.listNodes().forEach(node => {
 
             const nodeName = node.getName();
-                if (nodeName.includes("LOD0") || nodeName.includes("LOD2")) {
+                if (nodeName.includes("LOD0") || nodeName.includes("LOD2") || nodeName.includes("LOD3") ) {
                     node.dispose();
                 }
 
@@ -46,7 +46,7 @@ async function optimizeGLBFiles() {
 
           await document.transform(
             
-                prune(),          // Remove unused nodes, textures, or other data
+              //  prune(),          // Remove unused nodes, textures, or other data
                 
             );
 

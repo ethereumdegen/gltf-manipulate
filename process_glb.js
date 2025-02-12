@@ -54,9 +54,11 @@ async function optimizeGLBFiles() {
 
 
             await document.transform(
+            
              //   resample(),       // Losslessly resample animation frames
-                prune(),          // Remove unused nodes, textures, or other data
-               // dedup(),          // Remove duplicate vertex or texture data, if any
+           //     prune(),          // Remove unused nodes, textures, or other data // moves UVs ? 
+            
+              // dedup(),          // Remove duplicate vertex or texture data, if any
                // draco(),          // Compress mesh geometry with Draco
                 
            //     backfaceCulling({cull: true}), // Custom transform for backface culling

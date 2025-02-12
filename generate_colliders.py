@@ -59,20 +59,20 @@ def process_and_export_convex_hulls(input_file, output_file ):
     # Set CoACD parameters directly in function call
     convex_parts = coacd.run_coacd(
         original_mesh,
-        threshold=0.1,              # Higher = fewer convex hulls (default: 0.05)
-        max_convex_hull=6,          # Reduce number of convex hulls (-1 means unlimited)
+        threshold=0.05,              # Higher = fewer convex hulls (default: 0.05)
+        max_convex_hull=64,          # Reduce number of convex hulls (-1 means unlimited)
         preprocess_mode="auto",     # Keep automatic preprocessing
-        preprocess_resolution=50,   # Lower preprocessing resolution
-        resolution=50000,           # Lower = fewer hulls, but less accurate
-        mcts_nodes=10,              # Reduce search space to limit hulls
-        mcts_iterations=100,        # Fewer iterations for speed
-        mcts_max_depth=3,           # Depth limit for MCTS
-        pca=False,                  # Disable PCA alignment
-        merge=True,                 # Enable merging of smaller convex hulls
-        decimate=True,              # Simplify hulls by reducing vertices
-        max_ch_vertex=128,          # Maximum vertices per convex hull
-        extrude=False,              # Disable extrude (can cause extra faces)
-        extrude_margin=0.02,        # Extrude margin for hull merging
+       # preprocess_resolution=70,   # Lower preprocessing resolution
+      #  resolution=70000,           # Lower = fewer hulls, but less accurate
+       # mcts_nodes=14,              # Reduce search space to limit hulls - default 20 
+       # mcts_iterations=100,        # Fewer iterations for speed
+      #  mcts_max_depth=3,           # Depth limit for MCTS
+      #  pca=False,                  # Disable PCA alignment
+      #  merge=True,                 # Enable merging of smaller convex hulls
+      #  decimate=True,              # Simplify hulls by reducing vertices
+        max_ch_vertex=64,           # Maximum vertices per convex hull
+      #  extrude=False,              # Disable extrude (can cause extra faces)
+      #  extrude_margin=0.02,        # Extrude margin for hull merging
         apx_mode="ch",              # Approximation shape mode: convex hull
         seed=42,                    # Set random seed for reproducibility
     )
