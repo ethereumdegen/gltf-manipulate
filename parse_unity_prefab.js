@@ -3,7 +3,7 @@
 import fs from 'fs';
 import  yaml  from 'yaml' ;
 
-
+// https://unity.com/blog/engine-platform/understanding-unitys-serialization-language-yaml
 
  
 
@@ -106,16 +106,45 @@ function createUnityType(tagSuffix) {
 
      collection: 'map',
 
-     resolve: (doc, cst) => {
-      console.log(`Raw Content: ${doc}`);
-    }, 
+   
+
+    resolve: (doc, cst) => {  
+
+ 
+          console.log( "val",   doc  )  ;
+
+          if (doc && doc.items){
+
+            console.log( "items" , JSON.stringify( doc.items ) );
+
+
+          }
+            
+     
+        if ( cst && cst.value  )  {
+          // Assuming cst.value contains the full node value as string
+          const properties = yaml.parse(cst.value);
+
+          // Extract UUID from the anchor if available
+          const uuid = cst.anchor; // This assumes that the anchor is the UUID, check your specific YAML structure
+
+           console.log(`uuid: ${uuid}`);
+
+          // Include the UUID in the returned object
+          return {
+            uuid: uuid,
+            type: `UnityType${tagSuffix}`,
+            ...properties
+          };
+        }
+    },
+
+
+
 
     identify: v => !!(typeof v === 'object' && v && v instanceof Error)
 
-
- //    kind: 'mapping', // or 'scalar', 'sequence', depending on what you expect
-   // resolve: data => true, // Assuming we always resolve successfully
-     
+ 
   };
 }
  
@@ -136,7 +165,7 @@ const customTags = [
 // Options for YAML parser
 const yamlOptions = {
   customTags ,
-  schema: 'unity',
+  schema: 'core',
 };
 
 
@@ -145,8 +174,43 @@ const yamlOptions = {
 function parseUnityYAML(filePath) {
   try {
     const fileContents = fs.readFileSync(filePath, 'utf8');
-    const docs = yaml.parseAllDocuments(fileContents, yamlOptions).map(doc => doc.toJSON());
-    return docs; // Returns an array of JavaScript objects
+
+      const document = yaml.parseDocument(fileContents, yamlOptions);
+    const items = [];
+ 
+
+
+    // Iterate over all items in the document
+    for (const item of document.contents.items) {
+
+
+        console.log({item});
+
+      const node = item.key;
+      const value = item.value;
+
+     console.log(JSON.stringify(item.key));
+
+      
+      // Check if the node has a tag and anchor which are often used for UUIDs
+      if (node.tag && node.anchor) {
+        const tag = node.tag;
+        const uuid = node.anchor;
+        const properties = value.toJSON();  // Converts the YAML node to a JSON object
+
+        items.push({
+          uuid: uuid,
+          tag: tag,
+          properties: properties
+        });
+      }
+    }
+
+
+
+     return items;
+    //const docs = yaml.parseAllDocuments(fileContents, yamlOptions).map(doc => doc.toJSON());
+     // return docs; // Returns an array of JavaScript objects
   } catch (error) {
     console.error('Failed to parse the YAML file:', error);
     return null;
