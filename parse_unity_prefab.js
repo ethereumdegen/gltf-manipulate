@@ -30,31 +30,113 @@ class ZoneEntity {
 
 
 
-// Custom tag handling
-function customTagResolver(value, tagName) {
-  // Log the tag and value to see what's being parsed
-  console.log(`Handling tag ${tagName} with value`, value);
-  return { tag: tagName, value }; // Simple wrap into an object with its tag
-}
-
-
+ 
  
 
-// Custom tag handling for Unity-specific tags
-const unityTagHandler = {
-  identify: value => true,
-  tag: '!u!', // This will need to be adjusted if Unity uses multiple distinct tags
+ /*
+const customTags = [{
+  tag: '!u!',
+  identify: value => typeof value === 'object',
   resolve: (doc, cst) => {
-    // Custom parsing logic for Unity tags
-    return yaml.parse(cst.strValue, { schema: 'failsafe' });
+    // Parsing the custom tag to extract the type and UUID
+    const tagMatch = cst.tag.match(/^!u!(\d+)/);
+    const uuidMatch = cst.src.match(/&(\d+)/); // Use `src` to access the raw string
+    if (tagMatch && uuidMatch) {
+
+    	console.log("tag match !! ");
+      return {
+        type: `UnityType${tagMatch[1]}`,
+        uuid: uuidMatch[1],
+        properties: yaml.parse(cst.value)
+      };
+    } else {
+
+    	console.log(" no tag match   ");
+    }
+    return yaml.parse(cst.value);
   },
-  test: /^!u!\d+$/,
-};
+  construct: data => {
+    // Custom construction logic if needed, based on the data.type
+    return data;
+  },
+   test: /^!u!\d+/
+}];
+*/
+
+
+/*
+const customTags = [{
+  tag: '!u!',
+  identify: value => true, // Simplified for testing purposes, normally should be more specific
+  resolve: (doc, cst) => {
+    console.log(`Raw Content: ${cst.src}`); // Log raw content to see what's being read
+    const tagMatch = cst.tag.match(/^!u!(\d+)/);
+    const uuidMatch = cst.src.match(/&(\d+)/); // Assuming 'src' is the correct raw string property
+    console.log(`Tag Match: ${tagMatch}, UUID Match: ${uuidMatch}`); // Debug output
+    if (tagMatch && uuidMatch) {
+      return {
+        type: `UnityType${tagMatch[1]}`,
+        uuid: uuidMatch[1],
+        properties: yaml.parse(cst.value)
+      };
+    }
+    return yaml.parse(cst.value);
+  },
+  test: /^!u!\d+/ // Ensure this matches the tags exactly as they appear in your YAML files
+}];*/
+
+/*
+const error = {
+  tag: '!tag:unity3d.com,2011',
+  collection: 'map',
+
+   resolve: (doc, cst) => {
+    console.log(`Raw Content: ${doc}`);
+  }, 
+
+  identify: v => !!(typeof v === 'object' && v && v instanceof Error)
+}
+
+*/
+
+
+function createUnityType(tagSuffix) {
+  return  { 
+    tag: `tag:unity3d.com,2011:${tagSuffix}` ,
+
+     collection: 'map',
+
+     resolve: (doc, cst) => {
+      console.log(`Raw Content: ${doc}`);
+    }, 
+
+    identify: v => !!(typeof v === 'object' && v && v instanceof Error)
+
+
+ //    kind: 'mapping', // or 'scalar', 'sequence', depending on what you expect
+   // resolve: data => true, // Assuming we always resolve successfully
+     
+  };
+}
+ 
+
+
+const customTags = [ 
+
+  // error , 
+
+   createUnityType('1'), // For GameObjects
+   createUnityType('4'), // For Components, etc.
+
+  ];
+
+
+
 
 // Options for YAML parser
 const yamlOptions = {
-  customTags: [unityTagHandler],
-  schema: 'failsafe',
+  customTags ,
+  schema: 'unity',
 };
 
 
@@ -83,7 +165,7 @@ function saveJsonFile(output_data, outputPath) {
 // Example usage
 const entities_array = parseUnityYAML('prefabs/PF_GeneralStore_Exterior.prefab');
 
-console.log( JSON.stringify ( entities_array ) )
+//console.log( JSON.stringify ( entities_array ) )
 
 
 saveJsonFile(entities_array, 'prefabs/output.json');
