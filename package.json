@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "dependencies": {
-    "@gltf-transform/core": "^4.1.1",
+    "@gltf-transform/core": "^4.2.1",
     "@gltf-transform/functions": "^4.1.1",
     "gl-matrix": "^3.4.3",
     "gltf-pipeline": "^4.1.0",

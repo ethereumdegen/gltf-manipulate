@@ -37,6 +37,7 @@ async function optimizeGLBFiles() {
 
             const nodeName = node.getName();
                 if (nodeName.includes("LOD0") || nodeName.includes("LOD2") || nodeName.includes("LOD3") ) {
+                    console.log( "disposing node: ", nodeName  );
                     node.dispose();
                 }
 

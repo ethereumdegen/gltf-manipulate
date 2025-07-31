@@ -29,9 +29,9 @@ readdir(inputDirectory, (err, files) => {
     }
 
     // Filter and process only FBX files
-    files.filter(file => file.endsWith('.fbx')).forEach(file => {
+    files.filter(file => file.endsWith('.FBX')).forEach(file => {
         const inputFilePath = join(inputDirectory, file);
-        const outputFile = file.replace('.fbx', '.glb'); // Change the file extension to .glb
+        const outputFile = file.replace('.FBX', '.glb'); // Change the file extension to .glb
         const outputFilePath = join(outputDirectory, outputFile);
 
         // Construct the command to run FBX2glTF

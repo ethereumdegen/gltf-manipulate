@@ -59,8 +59,8 @@ def process_and_export_convex_hulls(input_file, output_file ):
     # Set CoACD parameters directly in function call
     convex_parts = coacd.run_coacd(
         original_mesh,
-        threshold=0.05,              # Higher = fewer convex hulls (default: 0.05)
-        max_convex_hull=64,          # Reduce number of convex hulls (-1 means unlimited)
+        threshold=0.08,              # Higher = fewer convex hulls (default: 0.05)
+        max_convex_hull=16,          # Reduce number of convex hulls (-1 means unlimited)
         preprocess_mode="auto",     # Keep automatic preprocessing
        # preprocess_resolution=70,   # Lower preprocessing resolution
       #  resolution=70000,           # Lower = fewer hulls, but less accurate
@@ -70,7 +70,7 @@ def process_and_export_convex_hulls(input_file, output_file ):
       #  pca=False,                  # Disable PCA alignment
       #  merge=True,                 # Enable merging of smaller convex hulls
       #  decimate=True,              # Simplify hulls by reducing vertices
-        max_ch_vertex=64,           # Maximum vertices per convex hull
+        max_ch_vertex=16,           # Maximum vertices per convex hull
       #  extrude=False,              # Disable extrude (can cause extra faces)
       #  extrude_margin=0.02,        # Extrude margin for hull merging
         apx_mode="ch",              # Approximation shape mode: convex hull
